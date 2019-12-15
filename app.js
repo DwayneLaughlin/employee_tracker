@@ -20,7 +20,7 @@ function start (){
         .prompt({
             type: "list",
             message: "What would you like to do?",
-            choices: ["Add a new employee", "Add a new role", "Update an employee"],
+            choices: ["Add a new employee", "Add a new role", "Add a department"],
             name: "decision"
         })
         .then(function(answer){
@@ -45,10 +45,65 @@ function start (){
                         },
                         function (err,res){
                             if (err) throw err;
-                            console.log(res + "success")
+                            console.log("success")
                         })
                         
                     })
+            } else if (answer.decision === "Add a new role"){
+                roleQuestions();
+            } else {
+                deptQuestions();
             }
+        })
+}
+
+function roleQuestions(){
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the name of the role?",
+                name: "rolename"
+            },
+            {
+                type: "number",
+                message: "What is the salary for this role?",
+                name: "rolesalary"
+            },
+            {
+                type: "number",
+                message: "What is the department ID for this role?",
+                name:"deptID"
+            }
+        ])
+        .then(function(answer){
+            connection.query("INSERT INTO role SET ?",
+                {
+                    title: answer.rolename,
+                    salary: answer.rolesalary,
+                },
+                function (err,res){
+                    if (err) throw err;
+                    console.log( "success")
+                })
+        })
+}
+
+function deptQuestions(){
+    inquirer
+        .prompt({
+            type: "input",
+            message: "What is the name of the department?",
+            name: "deptID"
+        })
+        .then(function(answer){
+            connection.query("INSERT INTO department SET ?",
+                {
+                    dept_name:answer.deptID
+                },
+                function (err,res){
+                    if (err) throw err;
+                    console.log( "success")
+                })
         })
 }
