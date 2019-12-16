@@ -36,12 +36,43 @@ function start (){
                         message:"Enter employee's last name",
                         name: "lastname"
                     },
+                    {
+                        type: "list",
+                        message: "What is the name of the role?",
+                        choices:["reception", "call rep"],
+                        name: "rolename"
+                    },
+                    {
+                        type: "list",
+                        message: "What department does this employee work in?",
+                        choices: ["sales", "collections", "administrative"],
+                        name:"dept_ID"
+                    }
                 ])
                     .then(function (response){
                         connection.query("INSERT INTO employee SET ?",
                         {
                             first_name: response.firstname,
                             last_name: response.lastname,
+                        },
+                        function (err,res){
+                            if (err) throw err;
+                            console.log("success")
+                        })
+
+                        connection.query("INSERT INTO role SET ?",
+                        {
+                            title: response.rolename,
+                            salary: response.rolesalary,
+                        },
+                        function (err,res){
+                            if (err) throw err;
+                            console.log("success")
+                        })
+
+                        connection.query("INSERT INTO department SET ?",
+                        {
+                            dept_name: response.dept_ID,
                         },
                         function (err,res){
                             if (err) throw err;
@@ -73,7 +104,7 @@ function roleQuestions(){
             {
                 type: "number",
                 message: "What is the department ID for this role?",
-                name:"deptID"
+                name:"dept_ID"
             }
         ])
         .then(function(answer){
@@ -99,11 +130,11 @@ function deptQuestions(){
         .then(function(answer){
             connection.query("INSERT INTO department SET ?",
                 {
-                    dept_name:answer.deptID
+                    dept_name: answer.deptID
                 },
                 function (err,res){
                     if (err) throw err;
-                    console.log( "success")
+                    console.log(JSON.parse(res))
                 })
         })
 }

@@ -24,3 +24,30 @@ CREATE TABLE employee (
     manager_id INT,
     PRIMARY KEY (id)
 );
+
+INSERT INTO role (title, salary, department_id);
+VALUES ("reception", 40000, "administrative");
+
+INSERT INTO role (title, salary, department_id);
+VALUES ("call rep", 50000, "sales");
+
+INSERT INTO role (title, salary, department_id);
+VALUES ("call rep", 52000, "collections");
+
+INSERT INTO department (dept_name);
+VALUES ("collections");
+
+INSERT INTO department (dept_name);
+VALUES ("sales");
+
+INSERT INTO department (dept_name);
+VALUES ("administrative");
+-- FOR DISPLAYING TABLES
+SELECT * FROM employee;
+SELECT * FROM role;
+SELECT * FROM department;
+
+-- FOR CLEARING TABLES OF UNNECESSARY TEST JARGON
+TRUNCATE TABLE employee;
+TRUNCATE TABLE role;
+TRUNCATE TABLE department;
