@@ -21,7 +21,7 @@ function start (){
         .prompt({
             type: "list",
             message: "What would you like to do?",
-            choices: ["Add a new employee", "Add a new role", "Add a department"],
+            choices: ["Add a new employee", "Add a new role", "Add a department","View all employees", "View all roles", "View all departments"],
             name: "decision"
         })
         .then(function(answer){
@@ -29,8 +29,14 @@ function start (){
                 employeeQuestions();
             } else if (answer.decision === "Add a new role"){
                 roleQuestions();
-            } else {
+            } else if (answer.decision === "Add a new Department"){
                 deptQuestions();
+            } else if (answer.decision === "View all employees"){
+                employeeList();
+            } else if (answer.decision === "View all roles"){
+                roleList();
+            } else {
+                deptList();
             }
         })
 }
@@ -147,3 +153,25 @@ function deptQuestions(){
                 })
         })
 }
+
+function employeeList(){
+    connection.query("SELECT first_name, last_name FROM employee;", function (err, res){
+        if (err) throw err;
+        console.table(res)
+    });
+}
+
+function roleList(){
+    connection.query("SELECT role.title, role.salary FROM role;", function (err, res){
+        if (err) throw err;
+        console.table(res)
+    });
+}
+
+function deptList(){
+    connection.query("SELECT department.dept_name FROM department;", function (err, res){
+        if (err) throw err;
+        console.table(res)
+    });    
+}
+
