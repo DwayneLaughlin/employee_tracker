@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const cTable = require("console.table")
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -25,66 +26,80 @@ function start (){
         })
         .then(function(answer){
             if (answer.decision == "Add a new employee"){
-                inquirer
-                    .prompt([{
-                        type: "input",
-                        message:"Enter employee's first name",
-                        name: "firstname"
-                    },
-                    {
-                        type: "input",
-                        message:"Enter employee's last name",
-                        name: "lastname"
-                    },
-                    {
-                        type: "list",
-                        message: "What is the name of the role?",
-                        choices:["reception", "call rep"],
-                        name: "rolename"
-                    },
-                    {
-                        type: "list",
-                        message: "What department does this employee work in?",
-                        choices: ["sales", "collections", "administrative"],
-                        name:"dept_ID"
-                    }
-                ])
-                    .then(function (response){
-                        connection.query("INSERT INTO employee SET ?",
-                        {
-                            first_name: response.firstname,
-                            last_name: response.lastname,
-                        },
-                        function (err,res){
-                            if (err) throw err;
-                            console.log("success")
-                        })
-
-                        connection.query("INSERT INTO role SET ?",
-                        {
-                            title: response.rolename,
-                            salary: response.rolesalary,
-                        },
-                        function (err,res){
-                            if (err) throw err;
-                            console.log("success")
-                        })
-
-                        connection.query("INSERT INTO department SET ?",
-                        {
-                            dept_name: response.dept_ID,
-                        },
-                        function (err,res){
-                            if (err) throw err;
-                            console.log("success")
-                        })
-                        
-                    })
+                employeeQuestions();
             } else if (answer.decision === "Add a new role"){
                 roleQuestions();
             } else {
                 deptQuestions();
             }
+        })
+}
+
+function employeeQuestions(){
+    inquirer
+        .prompt([{
+            type: "input",
+            message:"Enter employee's first name",
+            name: "firstname"
+        },
+        {
+            type: "input",
+            message:"Enter employee's last name",
+            name: "lastname"
+        },
+        {
+            type: "list",
+            message: "What is the name of the role?",
+            choices:["reception", "call rep"],
+            name: "rolename"
+        },
+        {
+            type: "list",
+            message: "What department does this employee work in?",
+            choices: ["sales", "collections", "administrative"],
+            name:"dept_ID"
+        },
+        {
+            type: "number",
+            message: "What is the salary for this position?",
+            name: "rolesalary"
+        }
+    ])
+        .then(function (response){
+            connection.query("INSERT INTO employee SET ?",
+            {
+                first_name: response.firstname,
+                last_name: response.lastname,
+            },
+            function (err,res){
+                if (err) throw err;
+                console.log("success")
+            })
+
+            connection.query("INSERT INTO role SET ?",
+            {
+                title: response.rolename,
+                salary: response.rolesalary,
+            },
+            function (err,res){
+                if (err) throw err;
+               
+            })
+
+            connection.query("INSERT INTO department SET ?",
+            {
+                dept_name: response.dept_ID,
+            },
+            function (err,res){
+                if (err) throw err;
+                
+            })
+
+            connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.dept_name FROM employee RIGHT JOIN role ON (employee.id = role.id) LEFT JOIN department ON (department.id = role.id);", function (err, res){
+                if (err) throw err;
+                console.table(res)
+            });
+            
         })
 }
 
@@ -98,11 +113,6 @@ function roleQuestions(){
             },
             {
                 type: "number",
-                message: "What is the salary for this role?",
-                name: "rolesalary"
-            },
-            {
-                type: "number",
                 message: "What is the department ID for this role?",
                 name:"dept_ID"
             }
@@ -110,8 +120,7 @@ function roleQuestions(){
         .then(function(answer){
             connection.query("INSERT INTO role SET ?",
                 {
-                    title: answer.rolename,
-                    salary: answer.rolesalary,
+                    title: answer.rolename
                 },
                 function (err,res){
                     if (err) throw err;
@@ -134,7 +143,7 @@ function deptQuestions(){
                 },
                 function (err,res){
                     if (err) throw err;
-                    console.log(JSON.parse(res))
+                    console.log(this)
                 })
         })
 }
