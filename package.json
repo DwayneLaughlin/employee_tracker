@@ -1,7 +1,7 @@
 {
   "name": "employee_tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is an employee tracker using Javascript and SQL. It would work as an application for adding and updating employee roles and keeping track of information like job titles and salaries.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,5 +21,6 @@
     "console.table": "^0.10.0",
     "inquirer": "^7.0.0",
     "mysql": "^2.17.1"
-  }
+  },
+  "devDependencies": {}
 }
