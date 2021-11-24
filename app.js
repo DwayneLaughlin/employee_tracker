@@ -56,7 +56,7 @@ function employeeQuestions(){
         {
             type: "list",
             message: "What is the name of the role?",
-            choices:["reception", "call rep"],
+            choices: testRole,
             name: "rolename"
         },
         {
@@ -174,4 +174,11 @@ function deptList(){
         console.table(res)
     });    
 }
+
+const testRole = connection.query("SELECT DISTINCT role.title FROM role;",function (err,res){
+    if (err) throw err;
+    for (var i = 0; i<res.length; i++) {
+        
+    }
+} )
 
