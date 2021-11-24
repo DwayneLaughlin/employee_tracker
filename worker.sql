@@ -25,22 +25,22 @@ CREATE TABLE employee (
     PRIMARY KEY (id)
 );
 
-INSERT INTO role (title, salary, department_id);
+INSERT INTO role (title, salary, department_id)
 VALUES ("reception", 40000, "administrative");
 
-INSERT INTO role (title, salary, department_id);
+INSERT INTO role (title, salary, department_id)
 VALUES ("call rep", 50000, "sales");
 
-INSERT INTO role (title, salary, department_id);
+INSERT INTO role (title, salary, department_id)
 VALUES ("call rep", 52000, "collections");
 
-INSERT INTO department (dept_name);
+INSERT INTO department (dept_name)
 VALUES ("collections");
 
-INSERT INTO department (dept_name);
+INSERT INTO department (dept_name)
 VALUES ("sales");
 
-INSERT INTO department (dept_name);
+INSERT INTO department (dept_name)
 VALUES ("administrative");
 -- FOR DISPLAYING TABLES
 SELECT * FROM employee;
